@@ -18,6 +18,14 @@ public class EmployerController {
     @Autowired
     private EmployerRepository employerRepository;
 
+    @RequestMapping("")
+    public String index(Model model) {
+
+        model.addAttribute("title", "Employers");
+        model.addAttribute("employers",employerRepository.findAll());
+        return "employers/index";
+    }
+
     @GetMapping("add")
     public String displayAddEmployerForm(Model model) {
         model.addAttribute(new Employer());
@@ -28,6 +36,7 @@ public class EmployerController {
     public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            System.out.println("newEmployer has errors");
             return "employers/add";
         }
         employerRepository.save(newEmployer);
